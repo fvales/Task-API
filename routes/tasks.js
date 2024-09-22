@@ -9,10 +9,7 @@ import {
 
 const taskRoutes = Router();
 
-taskRoutes.get('/', getAllTasks);
-taskRoutes.get('/:id', getTaskById);
-taskRoutes.post('/', createTask);
-taskRoutes.patch('/:id', updateTask);
-taskRoutes.delete('/:id', deleteTask);
+taskRoutes.route('/').get(getAllTasks).post(createTask);
+taskRoutes.route('/:id').get(getTaskById).patch(updateTask).delete(deleteTask);
 
 export default taskRoutes;
