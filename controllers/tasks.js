@@ -9,9 +9,8 @@ export const createTask = async (req, res) => {
     const task = await Task.create(req.body);
     res.status(201).send({ task });
   } catch (e) {
-    console.log(e);
+    res.status(500).send({ message: { e } });
   }
-  res.sendStatus(500);
 };
 
 export const getTaskById = (req, res) => {
