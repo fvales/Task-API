@@ -35,6 +35,15 @@ export const updateTask = (req, res) => {
   res.send('Updated a task!!!');
 };
 
-export const deleteTask = (req, res) => {
-  res.send('Deleted a task!!!');
+export const deleteTask = async (req, res) => {
+  try {
+    const { id: taskId } = req.params;
+    const task = await Task.findByIdAndDelete(taskId);
+    if (!task) {
+      return res.status(404).send({ message: `No task with id: ${taskId}` });
+    }
+    res.status(200).send({ task });
+  } catch (e) {
+    res.status(500).send({ message: e });
+  }
 };
