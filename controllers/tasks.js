@@ -1,7 +1,12 @@
 import Task from '../models/tasks.js';
 
-export const getAllTasks = (req, res) => {
-  res.send('All Tasks From File!!!');
+export const getAllTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find({});
+    res.status(200).send({ tasks });
+  } catch (e) {
+    res.status(500).send({ message: e });
+  }
 };
 
 export const createTask = async (req, res) => {
