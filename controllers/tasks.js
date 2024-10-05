@@ -18,8 +18,17 @@ export const createTask = async (req, res) => {
   }
 };
 
-export const getTaskById = (req, res) => {
-  res.send('A Task!!!');
+export const getTaskById = async (req, res) => {
+  try {
+    const { id: taskId } = req.params;
+    const task = await Task.findById(taskId);
+    if (!task) {
+      return res.status(404).send({ message: `No task with id: ${taskId}` });
+    }
+    res.status(200).send({ task });
+  } catch (e) {
+    res.status(500).send({ message: e });
+  }
 };
 
 export const updateTask = (req, res) => {
