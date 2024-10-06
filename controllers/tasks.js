@@ -1,5 +1,6 @@
 import Task from '../models/tasks.js';
 import { asyncWrapper } from '../middleware/asyncWrapper.js';
+import { createNewHttpError } from '../errors/http-errors.js';
 
 export const getAllTasks = asyncWrapper(async (req, res) => {
   const tasks = await Task.find({});
@@ -11,11 +12,11 @@ export const createTask = asyncWrapper(async (req, res) => {
   res.status(201).send({ task });
 });
 
-export const getTaskById = asyncWrapper(async (req, res) => {
+export const getTaskById = asyncWrapper(async (req, res, next) => {
   const { id: taskId } = req.params;
   const task = await Task.findById(taskId);
   if (!task) {
-    return res.status(404).send({ message: `No task with id: ${taskId}` });
+    return next(createNewHttpError(`No task with id: ${taskId}`, 404));
   }
   res.status(200).send({ task });
 });
@@ -28,7 +29,7 @@ export const updateTask = asyncWrapper(async (req, res) => {
     runValidators: true,
   });
   if (!task) {
-    return res.status(404).send({ message: `No task with id: ${taskId}` });
+    return next(createNewHttpError(`No task with id: ${taskId}`, 404));
   }
   res.status(200).send({ task });
 });
@@ -37,7 +38,7 @@ export const deleteTask = asyncWrapper(async (req, res) => {
   const { id: taskId } = req.params;
   const task = await Task.findByIdAndDelete(taskId);
   if (!task) {
-    return res.status(404).send({ message: `No task with id: ${taskId}` });
+    return next(createNewHttpError(`No task with id: ${taskId}`, 404));
   }
   res.status(200).send({ task });
 });

@@ -2,6 +2,7 @@ import express from 'express';
 import taskRoutes from './routes/tasks.js';
 import 'dotenv/config';
 import { connectDB } from './db/connect.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const PORT = process.env.PORT ?? 3000;
 const app = express();
@@ -23,6 +24,7 @@ start(process.env.MONGO_URI);
 app.use(express.json());
 
 app.use('/api/v1/tasks', taskRoutes);
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.send('Hello World!!!');
