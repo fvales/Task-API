@@ -35,7 +35,7 @@ export const updateTask = async (req, res) => {
   try {
     const { id: taskId } = req.params;
     const data = req.body;
-    const task = await Task.findOneAndUpdate({ _id: taskId }, data, {
+    const task = await Task.findByIdAndUpdate(taskId, data, {
       new: true,
       runValidators: true,
     });
